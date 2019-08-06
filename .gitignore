@@ -1,0 +1,13 @@
+*.pyc
+.idea
+.weights
+*.so
+*.o
+.Trash-1000/
+*.jpg
+*.png
+env/
+results
+data/pretrained_model
+lib/build/
+lib/faster_rcnn.egg-info/

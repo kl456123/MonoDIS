@@ -1,0 +1,229 @@
+{
+    "data_config": {
+        "dataloader_config": {
+            "batch_size": 1,
+            "num_workers": 1,
+            "shuffle": true
+        },
+        "dataset_config": {
+            "cache_bev": false,
+            "dataset_file": "train.txt",
+            "root_path": "/data/object/training"
+        },
+        "name": "kitti",
+        "transform_config": {
+            "crop_size": [
+                384,
+                1280
+            ],
+            "normal_mean": [
+                0.485,
+                0.456,
+                0.406
+            ],
+            "normal_van": [
+                0.229,
+                0.224,
+                0.225
+            ],
+            "random_blur": 0,
+            "random_brightness": 10,
+            "resize_range": [
+                0.2,
+                0.4
+            ]
+        }
+    },
+    "eval_config": {
+        "batch_size": 1,
+        "bbox_normalize_means": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bbox_normalize_stds": [
+            0.1,
+            0.1,
+            0.2,
+            0.2
+        ],
+        "bbox_normalize_targets_precomputed": true,
+        "bbox_reg": true,
+        "class_agnostic": true,
+        "classes": [
+            "bg",
+            "Car"
+        ],
+        "eval_out": "./results/data",
+        "eval_out_anchors":"./results/anchors",
+        "eval_out_rois":"./results/rois",
+        "max_per_image": 100,
+        "nms": 0.3,
+        "rng_seed": 3,
+        "thresh": 0.5
+    },
+    "eval_data_config": {
+        "dataloader_config": {
+            "batch_size": 1,
+            "num_workers": 1,
+            "shuffle": false
+        },
+        "dataset_config": {
+            "dataset_file": "val.txt",
+            "root_path": "/data/object/training"
+        },
+        "name": "kitti",
+        "transform_config": {
+            "normal_mean": [
+                0.485,
+                0.456,
+                0.406
+            ],
+            "normal_van": [
+                0.229,
+                0.224,
+                0.225
+            ]
+        }
+    },
+    "model_config": {
+        "use_self_attention":false,
+        "class_agnostic": true,
+        "classes": [
+            "bg",
+            "Car"
+        ],
+        "crop_resize_with_max_pool": false,
+        "feature_extractor_config": {
+            "pooling_size":7,
+            "class_agnostic": true,
+            "classes": [
+                "bg",
+                "Car"
+            ],
+            "img_channels": 3,
+            "pretrained_model": "data/pretrained_model/resnet50-19c8e357.pth",
+            "pretrained": true
+        },
+        "num_classes": 2,
+        "pooling_mode": "align",
+        "pooling_size": 7,
+        "rcnn_batch_size": 512,
+        "rpn_config": {
+            "use_iou":false,
+            "use_focal_loss":true,
+            "anchor_generator_config": {
+                "input_size":[384,1280],
+                "use_pyramid":false,
+                "anchor_offset": [
+                    0,
+                    0
+                ],
+                "anchor_stride": [
+                    16,
+                    16
+                ],
+                "aspect_ratios": [
+                    0.5,
+                    0.8,
+                    1
+                ],
+                "base_anchor_size": 16,
+                "scales": [
+                    2,
+                    4,
+                    8,
+                    16
+                ]
+            },
+            "din": 256,
+            "min_size": 16,
+            "nms_thresh": 0.7,
+            "num_bbox_samples": 500,
+            "num_cls_samples": 2000,
+            "post_nms_topN": 2000,
+            "pre_nms_topN": 12000,
+            "rpn_batch_size": 1024,
+            "sampler_config": {
+                "fg_fraction": 0.25
+            },
+            "target_assigner_config": {
+                "similarity_calc_config":{
+                    "type":"center"
+                },
+                "fg_thresh": 0.3,
+                "bg_thresh":0.3,
+                "coder_config": {
+                    "type":"center",
+                    "bbox_normalize_targets_precomputed": false
+                },
+                "matcher_config": {
+                    "type": "bipartitle"
+                }
+            },
+            "use_score": false
+        },
+        "sampler_config": {
+            "fg_fraction": 0.25
+        },
+        "subsample_twice": false,
+        "target_assigner_config": {
+            "similarity_calc_config":{
+                "type":"center"
+            },
+            "fg_thresh": 0.5,
+            "bg_thresh":0.5,
+            "coder_config": {
+                "type":"center",
+                "bbox_inside_weights": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "bbox_normalize_means": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "bbox_normalize_stds": [
+                    0.1,
+                    0.1,
+                    0.2,
+                    0.2
+                ],
+                "bbox_normalize_targets_precomputed": true
+            },
+            "matcher_config": {
+                "type": "argmax"
+            }
+        },
+        "truncated": false,
+        "use_focal_loss": true
+    },
+    "train_config": {
+        "checkpoint_interval": 10000,
+        "clip_gradient": 10,
+        "device_ids": [
+            0
+        ],
+        "disp_interval": 100,
+        "mGPUs": true,
+        "max_epochs": 200,
+        "optimizer_config": {
+            "lr": 0.001,
+            "momentum": 0.9,
+            "type": "sgd"
+        },
+        "rng_seed": 3,
+        "scheduler_config": {
+            "last_epoch": -1,
+            "lr_decay_gamma": 0.1,
+            "lr_decay_step": 20,
+            "type": "step"
+        },
+        "start_epoch": 1
+    }
+}

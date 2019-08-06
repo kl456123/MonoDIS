@@ -1,0 +1,225 @@
+{
+    "data_config": {
+        "type":"coco",
+        "dataloader_config": {
+            "batch_size": 1,
+            "num_workers": 1,
+            "shuffle": true
+        },
+        "dataset_config": {
+            "root_path":"/data/liangxiong/COCO2017",
+            "data_path":"val2017",
+            "label_path":"annotations/instances_val2017.json",
+            "classes": ["person", "bicycle", "car", "motorcycle", "bus", "train", "truck"]
+        },
+        "name": "kitti",
+        "transform_config": {
+            "crop_size": [
+                400,
+                1280
+            ],
+            "normal_mean": [
+                0.485,
+                0.456,
+                0.406
+            ],
+            "normal_van": [
+                0.229,
+                0.224,
+                0.225
+            ],
+            "random_blur": 0,
+            "random_brightness": 10,
+            "resize_range": [
+                0.2,
+                0.4
+            ]
+        }
+    },
+    "eval_config": {
+        "batch_size": 1,
+        "bbox_normalize_means": [
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "bbox_normalize_stds": [
+            0.1,
+            0.1,
+            0.2,
+            0.2
+        ],
+        "bbox_normalize_targets_precomputed": true,
+        "bbox_reg": true,
+        "class_agnostic": false,
+        "classes": ["person", "bicycle", "car", "motorcycle", "bus", "train", "truck"],
+        "eval_out": "./results/data",
+        "eval_out_anchors":"./results/anchors",
+        "eval_out_rois":"./results/rois",
+        "max_per_image": 100,
+        "nms": 0.3,
+        "rng_seed": 3,
+        "thresh": 0.5
+    },
+    "eval_data_config": {
+        "type":"coco",
+        "dataloader_config": {
+            "batch_size": 1,
+            "num_workers": 1,
+            "shuffle": false
+        },
+        "dataset_config": {
+            "root_path":"/data/liangxiong/COCO2017",
+            "data_path":"/data/liangxiong/COCO2017/val2017",
+            "label_path":"/data/liangxiong/COCO2017/annotations/instances_val2017.json",
+            "classes": ["person", "bicycle", "car", "motorcycle", "bus", "train", "truck"]
+        },
+        "name": "kitti",
+        "transform_config": {
+            "normal_mean": [
+                0.485,
+                0.456,
+                0.406
+            ],
+            "normal_van": [
+                0.229,
+                0.224,
+                0.225
+            ]
+        }
+    },
+    "model_config": {
+        "use_self_attention":false,
+        "class_agnostic": false,
+        "classes": ["person", "bicycle", "car", "motorcycle", "bus", "train", "truck"],
+        "crop_resize_with_max_pool": false,
+        "feature_extractor_config": {
+            "pooling_size":7,
+            "class_agnostic": false,
+            "classes": ["person", "bicycle", "car", "motorcycle", "bus", "train", "truck"],
+            "img_channels": 3,
+            "pretrained_path":"data/pretrained_model",
+            "pretrained": true,
+            "use_cascade": true
+        },
+        "pooling_mode": "align",
+        "pooling_size": 7,
+        "rcnn_batch_size": 64,
+        "rpn_config": {
+            "use_iou":false,
+            "use_focal_loss":true,
+            "anchor_generator_config": {
+                "anchor_offset": [
+                    0,
+                    0
+                ],
+                "anchor_stride": [
+                    16,
+                    16
+                ],
+                "aspect_ratios": [
+                    0.5,
+                    1.0,
+                    2
+                ],
+                "base_anchor_size": 1,
+                "scales":[200, 72, 32, 120, 36],
+                "all_scales": [
+                    16,
+                    56,
+                    108,
+                    160,
+                    320
+                ]
+            },
+            "din": 1024,
+            "min_size": 16,
+            "nms_thresh": 0.7,
+            "num_bbox_samples": 500,
+            "num_cls_samples": 2000,
+            "post_nms_topN": 1000,
+            "pre_nms_topN": 12000,
+            "rpn_batch_size": 256,
+            "sampler_config": {
+                "fg_fraction": 0.25
+            },
+            "target_assigner_config": {
+                "similarity_calc_config":{
+                    "type":"center"
+                },
+                "fg_thresh": 0.3,
+                "bg_thresh":0.3,
+                "coder_config": {
+                    "type":"center",
+                    "bbox_normalize_targets_precomputed": false
+                },
+                "matcher_config": {
+                    "type": "bipartitle"
+                }
+            },
+            "use_score": false
+        },
+        "sampler_config": {
+            "fg_fraction": 1
+        },
+        "subsample_twice": false,
+        "target_assigner_config": {
+            "similarity_calc_config":{
+                "type":"center"
+            },
+            "fg_thresh": 0.5,
+            "bg_thresh":0.5,
+            "coder_config": {
+                "type":"center",
+                "bbox_inside_weights": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "bbox_normalize_means": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "bbox_normalize_stds": [
+                    0.1,
+                    0.1,
+                    0.2,
+                    0.2
+                ],
+                "bbox_normalize_targets_precomputed": true
+            },
+            "matcher_config": {
+                "type": "argmax"
+            }
+        },
+        "truncated": false,
+        "use_focal_loss": true
+    },
+    "train_config": {
+        "checkpoint_interval": 100,
+        "clip_gradient": 10,
+        "device_ids": [
+            0
+        ],
+        "disp_interval": 1,
+        "mGPUs": true,
+        "max_epochs": 1000,
+        "optimizer_config": {
+            "lr": 0.001,
+            "momentum": 0.9,
+            "type": "adam"
+        },
+        "rng_seed": 3,
+        "scheduler_config": {
+            "last_step": -1,
+            "lr_decay_gamma": 0.1,
+            "lr_decay_step": 100,
+            "type": "step"
+        },
+        "start_epoch": 1
+    }
+}
